@@ -1,0 +1,14 @@
+Tag: name, slug, created_at, updated_at
+POSSESSES, 0N Question, 0N Tag
+Question: title, content, slug, created_at, updated_at
+HAS, 0N Question, 11 Answer
+
+Role: name, label, created_at, updated_at
+WRITTEN BY, 11 Question, 0N User
+HAS RIGHT, 11 Question, 11 Answer
+Answer: content, created_at, updated_at
+
+AFFECTED TO, 11 User, 0N Role
+User: username, password, description, avatar, slug, created_at, updated_at
+PROPOSE, 0N User, 11 Answer
+:

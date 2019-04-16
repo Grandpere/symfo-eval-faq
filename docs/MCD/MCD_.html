@@ -1,0 +1,69 @@
+<html>
+<head>
+<meta charset='utf-8'>
+<style>
+  #mld .relation { font-variant: small-caps; font-weight: bold }
+  #mld .primary { text-decoration: underline }
+  #mld .foreign { font-style: oblique }
+  #mld .normal { }
+</style>
+</head>
+<body>
+<div id='mld'>
+<div>
+  <span class='relation'>Tag</span> (
+    <span class='primary'>name</span>,
+    <span class='normal'>slug</span>,
+    <span class='normal'>created_at</span>,
+    <span class='normal'>updated_at</span>
+  )
+</div>
+<div>
+  <span class='relation'>POSSESSES</span> (
+    <span class='foreign primary'>title</span>,
+    <span class='foreign primary'>name</span>
+  )
+</div>
+<div>
+  <span class='relation'>Question</span> (
+    <span class='primary'>title</span>,
+    <span class='normal'>content</span>,
+    <span class='normal'>slug</span>,
+    <span class='normal'>created_at</span>,
+    <span class='normal'>updated_at</span>,
+    <span class='foreign'>username</span>,
+    <span class='foreign'>content.1</span>
+  )
+</div>
+<div>
+  <span class='relation'>Role</span> (
+    <span class='primary'>name</span>,
+    <span class='normal'>label</span>,
+    <span class='normal'>created_at</span>,
+    <span class='normal'>updated_at</span>
+  )
+</div>
+<div>
+  <span class='relation'>Answer</span> (
+    <span class='primary'>content</span>,
+    <span class='normal'>created_at</span>,
+    <span class='normal'>updated_at</span>,
+    <span class='foreign'>username</span>,
+    <span class='foreign'>title</span>
+  )
+</div>
+<div>
+  <span class='relation'>User</span> (
+    <span class='primary'>username</span>,
+    <span class='normal'>password</span>,
+    <span class='normal'>description</span>,
+    <span class='normal'>avatar</span>,
+    <span class='normal'>slug</span>,
+    <span class='normal'>created_at</span>,
+    <span class='normal'>updated_at</span>,
+    <span class='foreign'>name</span>
+  )
+</div>
+</div>
+</body>
+</html>
