@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ user.username }}{% endblock %}
+
+{% block sidebar %}
+    {% include "navigation/_left_nav.html.twig" %}
+{% endblock %}
+
+{% block body %}
+<div class="d-flex justify-content-between mb-4">
+    <h2 class="col-9">{{ user.username }}</h2>
+</div>
+
+<div class="content">
+    <div class="avatar">
+        <img src="{{ user.avatar }}" alt="avatar de {{ user.username }}">
+    </div>
+    <div class="description">
+        <p>
+            <h3>
+                Description :
+            </h3>
+            {{ user.description }}
+        </p>
+    </div>
+    <div class="questions">
+        <h3>
+            Questions :
+        </h3>
+        {% for question in user.questions %}
+            <p>
+                <a href="{{ path('question_show', {'id':question.id, 'slug':question.slug}) }}">
+                    {{ question.title }}
+                </a>
+            </p>
+        {% endfor %}
+    </div>
+    <div class="answers">
+        <h3>
+            Réponses :
+        </h3>
+        {% for answer in user.answers %}
+            <p>
+                {{ answer.content }}
+                <a href="{{ path('question_show', {'id':answer.question.id, 'slug':answer.question.slug}) }}">
+                    Voir la question
+                </a>
+            </p>
+        {% endfor %}
+    </div>
+<a href="{{ path('user_list') }}">back to list</a>
+</div>
+{% endblock %}

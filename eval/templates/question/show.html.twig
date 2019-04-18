@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ question.title }}{% endblock %}
+
+{% block sidebar %}
+    {% include "navigation/_left_nav.html.twig" %}
+{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-between mb-4">
+        <h2 class="col-9">{{ question.title }}</h2>
+    </div>
+    <div class="about">
+        <div class="tags">
+            {% for tag in question.tags %}
+                <a class="badge badge-secondary" href="">
+                    {{ tag.name }}
+                </a>
+            {% endfor %}
+        </div>
+        <div class="author">
+            by 
+            <a href="{{ path('user_show', {'id':question.author.id, 'slug':question.author.slug}) }}">{{ question.author.username }}</a>
+        </div>
+    </div>
+    <div class="content">
+        <h3>{{ question.answers|length }} réponse(s)</h3>
+            <div class="detail mb-4">
+                {{ question.content }}
+            </div>
+            <div class="answers">
+            {% for answer in question.answers %}
+                <p>
+                    {{ answer.content }}
+                </p>
+            {% endfor %}
+            </div>
+
+        <a class="btn btn-primary" href="{{ path('answer_new', {'id':question.id, 'slug':question.slug}) }}">Nouvelle réponse</a>
+        <a href="{{ path('question_list') }}">back to list</a>
+    </div>
+{% endblock %}

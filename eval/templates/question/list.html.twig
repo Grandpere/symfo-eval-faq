@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dernières questions{% endblock %}
+
+{% block sidebar %}
+    {% include "navigation/_left_nav.html.twig" %}
+{% endblock %}
+
+{% block body %}
+<div class="d-flex justify-content-between mb-4">
+    <h2 class="col-9">Dernières questions</h2>
+    <a class="btn btn-primary" href="{{ path('question_new') }}">Nouvelle question</a>
+</div>
+
+<div class="content">
+    {% for question in questions %}
+        <div class="card mb-2">
+            <div class="card-header">
+                <a href="{{ path('question_show', {'id':question.id, 'slug':question.slug}) }}">{{ question.title }}</a>
+            </div>
+            <div class="card-body">
+                {% for tag in question.tags %}
+                    <a class="badge badge-secondary" href="{{ path('tag_show', {'id':tag.id, 'slug':tag.slug}) }}">{{ tag.name }}</a>
+                {% endfor %}
+            </div>
+            <div class="card-footer">
+                <a href="{{ path('user_show', {'id':question.author.id, 'slug':question.author.slug}) }}">{{ question.author.username }}</a>
+            </div>
+        </div>
+    {% else %}
+        <td colspan="7">no records found
+    {% endfor %}
+</div>
+{% endblock %}

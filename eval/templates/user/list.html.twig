@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des users{% endblock %}
+
+{% block sidebar %}
+    {% include "navigation/_left_nav.html.twig" %}
+{% endblock %}
+
+{% block body %}
+<div class="d-flex justify-content-between mb-4">
+    <h2 class="col-9">Liste des users ({{ users|length }} user(s))</h2>
+</div>
+
+<div class="content">
+    {% for user in users %}
+        <div class="card mb-2">
+            <div class="card-header">
+                <a href="{{ path('user_show', {'id':user.id, 'slug':user.slug}) }}">{{ user.username }}</a>
+            </div>
+        </div>
+    {% else %}
+        <td colspan="7">no records found
+    {% endfor %}
+</div>
+{% endblock %}

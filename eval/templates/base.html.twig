@@ -2,11 +2,43 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}FAQ - OClock !{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <header>
+            {% include "navigation/_main_nav.html.twig" %}
+            <div id="banner" class="jumbotron">
+
+                <h1>
+                    <a href="{{ path('question_list')}}">
+                        FAQ - OClock
+                    </a>
+                </h1>
+
+            </div>
+        </header>
+        <div id="subnav">
+            {% block nav %}
+            {% endblock %} 
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                {% block sidebar %}{% endblock %}
+
+                <div class="col-10">
+                    {% for label, messages in app.flashes %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ label }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                    {% block body %}{% endblock %}
+                </div>
+            </div>            
+        </div>
         {% block javascripts %}{% endblock %}
     </body>
 </html>

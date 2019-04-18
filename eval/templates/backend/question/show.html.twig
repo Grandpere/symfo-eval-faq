@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Question{% endblock %}
+
+{% block body %}
+    <h1>Question</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ question.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ question.title }}</td>
+            </tr>
+            <tr>
+                <th>Content</th>
+                <td>{{ question.content }}</td>
+            </tr>
+            <tr>
+                <th>Slug</th>
+                <td>{{ question.slug }}</td>
+            </tr>
+            <tr>
+                <th>Created_at</th>
+                <td>{{ question.createdAt ? question.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Updated_at</th>
+                <td>{{ question.updatedAt ? question.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('backend_question_list') }}">back to list</a>
+
+    <a href="{{ path('backend_question_edit', {'id': question.id}) }}">edit</a>
+{% endblock %}

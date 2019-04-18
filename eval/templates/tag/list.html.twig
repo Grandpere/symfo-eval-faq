@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des thèmes{% endblock %}
+
+{% block sidebar %}
+    {% include "navigation/_left_nav.html.twig" %}
+{% endblock %}
+
+{% block body %}
+<div class="d-flex justify-content-between mb-4">
+    <h2 class="col-9">Liste des thèmes ({{ tags|length }} thème(s))</h2>
+</div>
+
+<div class="content">
+    {% for tag in tags %}
+        <div class="card mb-2">
+            <div class="card-header">
+                <a href="{{ path('tag_show', {'id':tag.id, 'slug':tag.slug}) }}">{{ tag.name }}</a>
+            </div>
+            <div class="card-body">
+                {{ tag.questions|length }}
+                Question(s)
+            </div>
+        </div>
+    {% else %}
+        <td colspan="7">no records found
+    {% endfor %}
+</div>
+{% endblock %}
