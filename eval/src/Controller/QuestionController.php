@@ -6,6 +6,7 @@ use App\Entity\Answer;
 use App\Entity\Question;
 use App\Form\AnswerType;
 use App\Form\QuestionType;
+use App\Form\RightAnswerType;
 use App\Repository\QuestionRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,11 +47,12 @@ class QuestionController extends AbstractController
             throw $this->createNotFoundException('Question introuvable');
         }
 
+        // Affichage et submit des réponses
         $answer = new Answer();
-        $form = $this->createForm(AnswerType::class, $answer);
-        $form->handleRequest($request);
+        $formAnswer = $this->createForm(AnswerType::class, $answer);
+        $formAnswer->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($formAnswer->isSubmitted() && $formAnswer->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $author = $this->getUser();
             $answer->setAuthor($author);
@@ -66,10 +68,27 @@ class QuestionController extends AbstractController
             return $this->redirectToRoute('question_show', ['id'=> $question->getId(), 'slug'=> $question->getSlug()]);
         }
 
+        // Choix de la bonne réponse parmi les réponses existantes
+        $formRightAnswer = $this->createForm(RightAnswerType::class, $question, ['answers' => $question->getAnswers()]);
+        $formRightAnswer->handleRequest($request);
+
+        if ($formRightAnswer->isSubmitted() && $formRightAnswer->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->flush();
+
+            $this->addFlash(
+                'success',
+                'Enregistrement effectué'
+            );
+            
+            return $this->redirectToRoute('question_show', ['id'=> $question->getId(), 'slug'=> $question->getSlug()]);
+        }
+
         return $this->render('question/show.html.twig', [
             'question' => $question,
             'answer' => $answer,
-            'form' => $form->createView(),
+            'formAnswer' => $formAnswer->createView(),
+            'formRightAnswer' => $formRightAnswer->createView(),
         ]);
     }
 

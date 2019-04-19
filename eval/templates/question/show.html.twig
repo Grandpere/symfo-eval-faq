@@ -8,7 +8,7 @@
 
 {% block body %}
     <div class="d-flex justify-content-between mb-4">
-        <h2 class="col-9">{{ question.title }}</h2>
+        <h2 class="col-9">{{ question.title }} ({{ question.answers|length }} réponse(s))</h2>
     </div>
     <div class="about">
         <div class="tags">
@@ -25,24 +25,31 @@
         </div>
     </div>
     <div class="content">
-        <h3>{{ question.answers|length }} réponse(s)</h3>
             <div class="detail mb-4">
                 {{ question.content }}
             </div>
             <div class="answers mx-4">
             <h4>Réponse(s)</h4>
+            {{ form_start(formRightAnswer) }}
+            <button class="btn btn-outline-success">{{ button_label|default('Valider la bonne réponse') }}</button>
             {% for answer in question.answers %}
-                <div class="answer-author">
-                    par 
-                    <a href="{{ path('user_show', {'id':answer.author.id, 'slug':answer.author.slug}) }}">{{ answer.author.username }}</a>
-                    le {{ answer.createdAt|date("d/m/Y") }} à {{ answer.createdAt|date("H:i:s") }}
+                <div class="answer">
+                {{ form_widget(formRightAnswer) }}
+                    <div class="answer-author">
+                        par 
+                        <a href="{{ path('user_show', {'id':answer.author.id, 'slug':answer.author.slug}) }}">{{ answer.author.username }}</a>
+                        le {{ answer.createdAt|date("d/m/Y") }} à {{ answer.createdAt|date("H:i:s") }}
+                    </div>
+                    <div class="answer-content">
+                        <p>
+                            {{ answer.content }}
+                        </p>
+                    </div>
                 </div>
-                <p>
-                    {{ answer.content }}
-                </p>
             {% endfor %}
+            {{ form_end(formRightAnswer) }}
             </div>
-        {{ include('answer/_form.html.twig') }}
+        {{ include('question/_form_answer.html.twig') }}
         <a href="{{ path('question_list') }}">back to list</a>
     </div>
 {% endblock %}

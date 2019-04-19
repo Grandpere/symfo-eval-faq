@@ -57,7 +57,7 @@ class Question
     private $tags;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Answer", mappedBy="question")
+     * @ORM\OneToMany(targetEntity="App\Entity\Answer", mappedBy="question", fetch="EAGER")
      */
     private $answers;
 
