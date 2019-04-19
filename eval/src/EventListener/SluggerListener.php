@@ -2,7 +2,7 @@
 
 namespace App\EventListener;
 
-use App\Entity\Question;
+use App\Entity\{Question, Tag, User};
 use App\Service\Slugger;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 
@@ -29,11 +29,24 @@ class SluggerListener
     {
         $entity = $args->getObject();
 
-        if (!$entity instanceof Question) {
+        // if (!$entity instanceof Question) {
+        //     return;
+        // }
+        // $slug = $this->slugger->slugify($entity->getTitle());
+        // $entity->setSlug($slug);
+
+        if($entity instanceof Question) {
+            $slug = $this->slugger->slugify($entity->getTitle());
+        }
+        else if($entity instanceof Tag) {
+            $slug = $this->slugger->slugify($entity->getName());
+        }
+        else if($entity instanceof User) {
+            $slug = $this->slugger->slugify($entity->getUsername());
+        }
+        else {
             return;
         }
-
-        $slug = $this->slugger->slugify($entity->getTitle());
         $entity->setSlug($slug);
     }
 }

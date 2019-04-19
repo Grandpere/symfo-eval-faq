@@ -5,10 +5,12 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
 class User implements UserInterface
 {
@@ -27,13 +29,23 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    // private $roles = [];
 
+    /**
+     * @ORM\Column(type="string", length=100, unique=true)
+     */
+    private $username;
+    
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * @ORM\Column(type="string", length=100, unique=true)
+     */
+    private $slug;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -44,16 +56,6 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $avatar;
-
-    /**
-     * @ORM\Column(type="string", length=100, unique=true)
-     */
-    private $slug;
-
-    /**
-     * @ORM\Column(type="string", length=100, unique=true)
-     */
-    private $username;
 
     /**
      * @ORM\Column(type="datetime")
@@ -80,6 +82,16 @@ class User implements UserInterface
      * @ORM\JoinColumn(nullable=false)
      */
     private $role;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $firstname;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $lastname;
 
     public function __construct()
     {
@@ -113,7 +125,14 @@ class User implements UserInterface
     public function getUsername(): string
     {
         // return (string) $this->email;
-        return $this->username;
+        return (string) $this->username;
+    }
+
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
+
+        return $this;
     }
 
     /**
@@ -121,11 +140,12 @@ class User implements UserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        // $roles = $this->roles;
+        // // guarantee every user at least has ROLE_USER
+        // $roles[] = 'ROLE_USER';
 
-        return array_unique($roles);
+        // return array_unique($roles);
+        return [$this->getRole()->getName()];
     }
 
     public function setRoles(array $roles): self
@@ -199,13 +219,6 @@ class User implements UserInterface
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
-
-        return $this;
-    }
-
-    public function setUsername(string $username): self
-    {
-        $this->username = $username;
 
         return $this;
     }
@@ -304,6 +317,30 @@ class User implements UserInterface
     public function setRole(?Role $role): self
     {
         $this->role = $role;
+
+        return $this;
+    }
+
+    public function getFirstname(): ?string
+    {
+        return $this->firstname;
+    }
+
+    public function setFirstname(string $firstname): self
+    {
+        $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    public function getLastname(): ?string
+    {
+        return $this->lastname;
+    }
+
+    public function setLastname(string $lastname): self
+    {
+        $this->lastname = $lastname;
 
         return $this;
     }

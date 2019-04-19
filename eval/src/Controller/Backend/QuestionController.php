@@ -39,7 +39,7 @@ class QuestionController extends AbstractController
             $entityManager->persist($question);
             $entityManager->flush();
 
-            return $this->redirectToRoute('question_list');
+            return $this->redirectToRoute('backend_question_list');
         }
 
         return $this->render('backend/question/new.html.twig', [
@@ -69,7 +69,7 @@ class QuestionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('question_list', [
+            return $this->redirectToRoute('backend_question_list', [
                 'id' => $question->getId(),
             ]);
         }

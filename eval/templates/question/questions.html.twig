@@ -9,7 +9,7 @@
 {% block body %}
 <div class="d-flex justify-content-between mb-4">
     <h2 class="col-9">Liste des questions ({{ questions|length }} question(s))</h2>
-    <a class="btn btn-primary" href="">Nouvelle question</a>
+    <a class="btn btn-primary" href="{{ path('question_new') }}">Nouvelle question</a>
 </div>
 
 <div class="content">
@@ -25,6 +25,7 @@
             </div>
             <div class="card-footer">
                 <a href="{{ path('user_show', {'id':question.author.id, 'slug':question.author.slug}) }}">{{ question.author.username }}</a>
+                le {{ question.createdAt|date("d/m/Y") }} à {{ question.createdAt|date("H:i:s") }}
             </div>
         </div>
     {% else %}

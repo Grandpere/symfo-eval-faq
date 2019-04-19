@@ -1,0 +1,39 @@
+{% extends 'backend/backend_layout.html.twig' %}
+
+{% block title %}Liste des Réponses{% endblock %}
+
+{% block body %}
+    <h1>Liste des Réponses</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Content</th>
+                <th>Created_at</th>
+                <th>Updated_at</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for answer in answers %}
+            <tr>
+                <td>{{ answer.id }}</td>
+                <td>{{ answer.content }}</td>
+                <td>{{ answer.createdAt ? answer.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ answer.updatedAt ? answer.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('backend_answer_show', {'id': answer.id}) }}">show</a>
+                    <a href="{{ path('backend_answer_edit', {'id': answer.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('backend_answer_new') }}">Create new</a>
+{% endblock %}

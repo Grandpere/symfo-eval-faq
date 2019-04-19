@@ -64,6 +64,11 @@ class QuestionController extends AbstractController
             $entityManager->persist($question);
             $entityManager->flush();
 
+            $this->addFlash(
+                'success',
+                'Enregistrement effectué'
+            );
+
             return $this->redirectToRoute('question_show', ['id'=> $question->getId(), 'slug'=> $question->getSlug()]);
         }
 

@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block nav %}
+    <nav class=" container-fluid nav">
+        {% if is_granted('ROLE_MODERATEUR') %}
+        <a class="nav-item nav-link"  href="{{ path('backend_question_list') }}"> 
+            Question 
+        </a>
+        <a class="nav-item nav-link"  href="{{ path('backend_answer_list') }}"> 
+            Answer 
+        </a>
+        <a class="nav-item nav-link"  href="{{ path('backend_tag_list') }}"> 
+            Tag 
+        </a>
+        {% endif %}
+        {% if is_granted('ROLE_ADMIN') %}
+        <a class="nav-item nav-link"  href="{{ path('backend_user_list') }}"> 
+            Droits des User 
+        </a>
+        {% endif %}
+    </nav>
+{% endblock %}

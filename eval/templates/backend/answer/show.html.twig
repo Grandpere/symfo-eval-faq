@@ -1,0 +1,32 @@
+{% extends 'backend/backend_layout.html.twig' %}
+
+{% block title %}answer{% endblock %}
+
+{% block body %}
+    <h1>answer</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ answer.id }}</td>
+            </tr>
+            <tr>
+                <th>Content</th>
+                <td>{{ answer.content }}</td>
+            </tr>
+            <tr>
+                <th>Created_at</th>
+                <td>{{ answer.createdAt ? answer.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Updated_at</th>
+                <td>{{ answer.updatedAt ? answer.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('backend_answer_list') }}">back to list</a>
+
+    <a href="{{ path('backend_answer_edit', {'id': answer.id}) }}">edit</a>
+{% endblock %}

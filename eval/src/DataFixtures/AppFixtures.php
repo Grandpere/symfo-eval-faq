@@ -68,7 +68,8 @@ class AppFixtures extends Fixture
             'username' => function() use ($generator) { return $generator->username(); },
             'avatar' => function() use ($generator) { return $generator->imageUrl($width = 640, $height = 480); },
             'role' => $roleUser,
-
+            'firstname' => function() use ($generator) { return $generator->firstName(); },
+            'lastname' => function() use ($generator) { return $generator->lastName(); },
         ), array(
             function($user) {
                 $encodedPassword = $this->passwordEncoder->encodePassword($user, 'password');

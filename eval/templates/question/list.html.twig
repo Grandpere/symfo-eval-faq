@@ -23,8 +23,9 @@
                     <a class="badge badge-secondary" href="{{ path('tag_show', {'id':tag.id, 'slug':tag.slug}) }}">{{ tag.name }}</a>
                 {% endfor %}
             </div>
-            <div class="card-footer">
+            <div class="card-footer"> 
                 <a href="{{ path('user_show', {'id':question.author.id, 'slug':question.author.slug}) }}">{{ question.author.username }}</a>
+                le {{ question.createdAt|date("d/m/Y") }} à {{ question.createdAt|date("H:i:s") }}
             </div>
         </div>
     {% else %}

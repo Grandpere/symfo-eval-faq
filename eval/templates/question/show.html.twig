@@ -18,9 +18,10 @@
                 </a>
             {% endfor %}
         </div>
-        <div class="author">
-            by 
+        <div class="question-author">
+            par 
             <a href="{{ path('user_show', {'id':question.author.id, 'slug':question.author.slug}) }}">{{ question.author.username }}</a>
+            le {{ question.createdAt|date("d/m/Y") }} à {{ question.createdAt|date("H:i:s") }}
         </div>
     </div>
     <div class="content">
@@ -28,8 +29,14 @@
             <div class="detail mb-4">
                 {{ question.content }}
             </div>
-            <div class="answers">
+            <div class="answers mx-4">
+            <h4>Réponse(s)</h4>
             {% for answer in question.answers %}
+                <div class="answer-author">
+                    par 
+                    <a href="{{ path('user_show', {'id':answer.author.id, 'slug':answer.author.slug}) }}">{{ answer.author.username }}</a>
+                    le {{ answer.createdAt|date("d/m/Y") }} à {{ answer.createdAt|date("H:i:s") }}
+                </div>
                 <p>
                     {{ answer.content }}
                 </p>
@@ -37,6 +44,7 @@
             </div>
 
         <a class="btn btn-primary" href="{{ path('answer_new', {'id':question.id, 'slug':question.slug}) }}">Nouvelle réponse</a>
+        {# {% include "answer/_form.html.twig" %} #}
         <a href="{{ path('question_list') }}">back to list</a>
     </div>
 {% endblock %}

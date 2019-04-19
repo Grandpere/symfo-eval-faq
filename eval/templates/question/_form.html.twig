@@ -1,4 +1,16 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    {# {{ form_widget(form) }} #}
+    {{ form_label(form.title) }}
+    {{ form_widget(form.title) }}
+    {{ form_label(form.content) }}
+    {{ form_widget(form.content) }}
+    {% for tag in form.tags %}
+        <div class="checkbox" style="display: inline-block;">
+            {{ form_widget(tag) }}
+            {{ form_label(tag) }}
+        </div>
+    {% endfor %}
+    <div>
+        <button class="btn">{{ button_label|default('Save') }}</button>
+    </div>
 {{ form_end(form) }}
