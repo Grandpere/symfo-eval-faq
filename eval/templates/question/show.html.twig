@@ -42,9 +42,7 @@
                 </p>
             {% endfor %}
             </div>
-
-        <a class="btn btn-primary" href="{{ path('answer_new', {'id':question.id, 'slug':question.slug}) }}">Nouvelle réponse</a>
-        {# {% include "answer/_form.html.twig" %} #}
+        {{ include('answer/_form.html.twig') }}
         <a href="{{ path('question_list') }}">back to list</a>
     </div>
 {% endblock %}

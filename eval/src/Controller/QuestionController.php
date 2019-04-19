@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Answer;
 use App\Entity\Question;
+use App\Form\AnswerType;
 use App\Form\QuestionType;
 use App\Repository\QuestionRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,15 +38,38 @@ class QuestionController extends AbstractController
     }
 
     /**
-     * @Route("question/{id}/{slug}", name="show", methods={"GET"}, requirements={"id"="\d+","slug"="[a-zA-Z0-9-]+"})
+     * @Route("question/{id}/{slug}", name="show", methods={"GET", "POST"}, requirements={"id"="\d+","slug"="[a-zA-Z0-9-]+"})
      */
-    public function show(Question $question): Response
+    public function show(Request $request, Question $question): Response
     {
         if(!$question) {
             throw $this->createNotFoundException('Question introuvable');
         }
+
+        $answer = new Answer();
+        $form = $this->createForm(AnswerType::class, $answer);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $author = $this->getUser();
+            $answer->setAuthor($author);
+            $answer->setQuestion($question);
+            $entityManager->persist($answer);
+            $entityManager->flush();
+
+            $this->addFlash(
+                'success',
+                'Enregistrement effectué'
+            );
+
+            return $this->redirectToRoute('question_show', ['id'=> $question->getId(), 'slug'=> $question->getSlug()]);
+        }
+
         return $this->render('question/show.html.twig', [
             'question' => $question,
+            'answer' => $answer,
+            'form' => $form->createView(),
         ]);
     }
 
