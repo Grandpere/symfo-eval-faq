@@ -43,9 +43,15 @@ class Answer
      */
     private $question;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $status;
+
     public function __construct()
     {
         $this->created_at = new \DateTime();
+        $this->status = true;
     }
 
     public function getId(): ?int
@@ -109,6 +115,18 @@ class Answer
     public function setQuestion(?Question $question): self
     {
         $this->question = $question;
+
+        return $this;
+    }
+
+    public function getStatus(): ?bool
+    {
+        return $this->status;
+    }
+
+    public function setStatus(bool $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

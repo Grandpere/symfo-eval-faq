@@ -9,6 +9,12 @@
 {% block body %}
     <div class="d-flex justify-content-between mb-4">
         <h2 class="col-9">{{ question.title }}</h2>
+        <div class="manage-question">
+            <form action="{{ path('backend_question_status', {'id':question.id }) }}" method="post">
+                    <input type="hidden" name="_token" value="{{ csrf_token('question-status' ~ question.id) }}">
+                    <button type="submit">Bloquer cette question</button>
+                </form>
+        </div>
     </div>
     <div class="about">
         <div class="tags">
@@ -58,7 +64,7 @@
                         </form>
                     {% endif %}
 
-                        <form action="{{ path('question_answer_status', {'id':question.id, 'answerId':answer.id }) }}" method="post">
+                        <form action="{{ path('backend_answer_status', {'id':answer.id }) }}" method="post">
                             <input type="hidden" name="_token" value="{{ csrf_token('answer-status' ~ answer.id) }}">
                             <button type="submit">Bloquer cette réponse</button>
                         </form>

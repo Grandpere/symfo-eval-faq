@@ -79,4 +79,24 @@ class AnswerController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    /**
+     * @Route("/{id}/status", name="status", methods={"POST"})
+     */
+    public function status(Request $request, Answer $answer) : Response
+    {
+        if (!$answer) {
+            throw $this->createNotFoundException('Réponse introuvable');
+        }
+        if ($this->isCsrfTokenValid('answer-status'.$answer->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $answer->setStatus(!$answer->getStatus());
+            $entityManager->flush();
+            $this->addFlash(
+            'success',
+            'Enregistrement effectué'
+            );
+        }
+        return $this->redirectToRoute('question_show', ['id'=> $answer->getQuestion()->getId() , 'slug'=> $answer->getQuestion()->getSlug()]);
+    }
 }

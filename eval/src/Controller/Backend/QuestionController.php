@@ -79,4 +79,24 @@ class QuestionController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    /**
+     * @Route("/{id}/status", name="status", methods={"POST"})
+     */
+    public function status(Request $request, Question $question) : Response
+    {
+        if (!$question) {
+            throw $this->createNotFoundException('Question introuvable');
+        }
+        if ($this->isCsrfTokenValid('question-status'.$question->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $question->setStatus(!$question->getStatus());
+            $entityManager->flush();
+            $this->addFlash(
+            'success',
+            'Enregistrement effectué'
+            );
+        }
+        return $this->redirectToRoute('question_show', ['id'=> $question->getId() , 'slug'=> $question->getSlug()]);
+    }
 }

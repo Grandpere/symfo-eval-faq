@@ -66,11 +66,17 @@ class Question
      */
     private $right_answer;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $status;
+
     public function __construct()
     {
         $this->created_at = new \DateTime();
         $this->tags = new ArrayCollection();
         $this->answers = new ArrayCollection();
+        $this->status = true;
     }
 
     public function getId(): ?int
@@ -215,6 +221,18 @@ class Question
     public function setRightAnswer(?Answer $right_answer): self
     {
         $this->right_answer = $right_answer;
+
+        return $this;
+    }
+
+    public function getStatus(): ?bool
+    {
+        return $this->status;
+    }
+
+    public function setStatus(bool $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }
