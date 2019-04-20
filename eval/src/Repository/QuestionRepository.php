@@ -19,11 +19,33 @@ class QuestionRepository extends ServiceEntityRepository
         parent::__construct($registry, Question::class);
     }
 
-    public function lastQuestions()
+    public function sevenlastActiveQuestions()
     {
         $query = $this->createQueryBuilder('q')
+                        ->andWhere('q.status = 1')
                         ->orderBy('q.id', 'DESC')
                         ->setMaxResults(7);
         return $query->getQuery()->getResult();
     }
+
+    public function allActiveQuestions()
+    {
+        $query = $this->createQueryBuilder('q')
+                        ->andWhere('q.status = 1')
+                        ->orderBy('q.id', 'DESC');
+                        // ->setMaxResults(7);
+        return $query->getQuery()->getResult();
+    }
+
+    // public function findAnswerActiveByQuestion($question)
+    // {
+    //     return $this->createQueryBuilder('a')
+    //         ->innerJoin('a.question', 'q')
+    //         ->addSelect('q')
+    //         ->andWhere('a.question = :question')
+    //         ->setParameter('question', $question)
+    //         ->getQuery()
+    //         ->getResult()
+    //     ;
+    // }
 }

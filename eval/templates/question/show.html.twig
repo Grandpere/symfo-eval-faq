@@ -9,12 +9,14 @@
 {% block body %}
     <div class="d-flex justify-content-between mb-4">
         <h2 class="col-9">{{ question.title }}</h2>
+        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATEUR') %}
         <div class="manage-question">
             <form action="{{ path('backend_question_status', {'id':question.id }) }}" method="post">
-                    <input type="hidden" name="_token" value="{{ csrf_token('question-status' ~ question.id) }}">
-                    <button type="submit">Bloquer cette question</button>
-                </form>
+                <input type="hidden" name="_token" value="{{ csrf_token('question-status' ~ question.id) }}">
+                <button type="submit">Bloquer cette question</button>
+            </form>
         </div>
+        {% endif %}
     </div>
     <div class="about">
         <div class="tags">
@@ -63,11 +65,12 @@
                             <button type="submit">Valider cette réponse</button>
                         </form>
                     {% endif %}
-
+                        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATEUR') %}
                         <form action="{{ path('backend_answer_status', {'id':answer.id }) }}" method="post">
                             <input type="hidden" name="_token" value="{{ csrf_token('answer-status' ~ answer.id) }}">
                             <button type="submit">Bloquer cette réponse</button>
                         </form>
+                        {% endif %}
                     </div>
                 </div>
             {% endfor %}

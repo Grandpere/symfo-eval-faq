@@ -47,4 +47,6 @@ class AnswerRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    // TODO: faire custom query pour obtenir uniquement les réponses active d'une question
 }

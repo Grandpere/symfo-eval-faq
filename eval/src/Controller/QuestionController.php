@@ -25,7 +25,7 @@ class QuestionController extends AbstractController
     public function list(QuestionRepository $questionRepository) : Response
     {
         return $this->render('question/list.html.twig', [
-            'questions' => $questionRepository->lastQuestions(),
+            'questions' => $questionRepository->sevenlastActiveQuestions(),
         ]);
     }
 
@@ -35,7 +35,7 @@ class QuestionController extends AbstractController
     public function questions(QuestionRepository $questionRepository) : Response
     {
         return $this->render('question/questions.html.twig', [
-            'questions'=> $questionRepository->findAll(),
+            'questions'=> $questionRepository->allActiveQuestions(),
         ]);
     }
 
