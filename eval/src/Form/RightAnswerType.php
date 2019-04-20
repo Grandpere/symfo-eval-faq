@@ -16,6 +16,7 @@ class RightAnswerType extends AbstractType
         $answers = $options['answers'];
         $builder
             ->add('right_answer', EntityType::class, [
+                'label' => false,
                 'class' => Answer::class,
                 'choice_label' => 'content',
                 'choices' => $answers,
@@ -23,7 +24,7 @@ class RightAnswerType extends AbstractType
                 'multiple' => false,
                 'empty_data' => null,
             ])
-            // TODO: a finir
+            // TODO: faire un bouton par réponse avec un form classique car affichage non adapté avec choice
         ;
     }
 

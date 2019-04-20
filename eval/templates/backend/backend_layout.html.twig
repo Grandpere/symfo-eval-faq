@@ -2,7 +2,7 @@
 
 {% block nav %}
     <nav class=" container-fluid nav">
-        {% if is_granted('ROLE_MODERATEUR') %}
+        {% if is_granted('ROLE_MODERATEUR') or is_granted('ROLE_ADMIN') %}
         <a class="nav-item nav-link"  href="{{ path('backend_question_list') }}"> 
             Question 
         </a>

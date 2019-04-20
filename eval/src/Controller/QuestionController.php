@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\AnswerRepository;
 
 /**
      * @Route(name="question_")
@@ -68,27 +69,27 @@ class QuestionController extends AbstractController
             return $this->redirectToRoute('question_show', ['id'=> $question->getId(), 'slug'=> $question->getSlug()]);
         }
 
-        // Choix de la bonne réponse parmi les réponses existantes
-        $formRightAnswer = $this->createForm(RightAnswerType::class, $question, ['answers' => $question->getAnswers()]);
-        $formRightAnswer->handleRequest($request);
+        // // Choix de la bonne réponse parmi les réponses existantes
+        // $formRightAnswer = $this->createForm(RightAnswerType::class, $question, ['answers' => $question->getAnswers()]);
+        // $formRightAnswer->handleRequest($request);
 
-        if ($formRightAnswer->isSubmitted() && $formRightAnswer->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->flush();
+        // if ($formRightAnswer->isSubmitted() && $formRightAnswer->isValid()) {
+        //     $entityManager = $this->getDoctrine()->getManager();
+        //     $entityManager->flush();
 
-            $this->addFlash(
-                'success',
-                'Enregistrement effectué'
-            );
+        //     $this->addFlash(
+        //         'success',
+        //         'Enregistrement effectué'
+        //     );
             
-            return $this->redirectToRoute('question_show', ['id'=> $question->getId(), 'slug'=> $question->getSlug()]);
-        }
+        //     return $this->redirectToRoute('question_show', ['id'=> $question->getId(), 'slug'=> $question->getSlug()]);
+        // }
 
         return $this->render('question/show.html.twig', [
             'question' => $question,
             'answer' => $answer,
             'formAnswer' => $formAnswer->createView(),
-            'formRightAnswer' => $formRightAnswer->createView(),
+            // 'formRightAnswer' => $formRightAnswer->createView(),
         ]);
     }
 
@@ -120,5 +121,32 @@ class QuestionController extends AbstractController
             'question' => $question,
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/question/{id}/answer/{answerId}/right", name="right", methods={"POST"}, requirements={"id"="\d+", "answerId"="\d+"})
+     */
+    public function right(Request $request, Question $question, $answerId, AnswerRepository $answerRepository) : Response
+    {
+        if(!$question) {
+            throw $this->createNotFoundException('Question introuvable');
+        }
+
+        if ($this->getUser() == $question->getAuthor()) {
+            $answer = $answerRepository->findOneBy(['id' => $answerId]);
+            if (!$answer) {
+                throw $this->createNotFoundException('Réponse introuvable');
+            }
+            if ($this->isCsrfTokenValid('right'.$question->getId(), $request->request->get('_token'))) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $question->setRightAnswer($answer);
+                $entityManager->flush();
+                $this->addFlash(
+                'success',
+                'Enregistrement effectué'
+            );
+            }
+        }
+        return $this->redirectToRoute('question_show', ['id'=> $question->getId(), 'slug'=> $question->getSlug()]);
     }
 }

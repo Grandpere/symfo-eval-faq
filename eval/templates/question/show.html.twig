@@ -8,7 +8,7 @@
 
 {% block body %}
     <div class="d-flex justify-content-between mb-4">
-        <h2 class="col-9">{{ question.title }} ({{ question.answers|length }} réponse(s))</h2>
+        <h2 class="col-9">{{ question.title }}</h2>
     </div>
     <div class="about">
         <div class="tags">
@@ -29,12 +29,17 @@
                 {{ question.content }}
             </div>
             <div class="answers mx-4">
-            <h4>Réponse(s)</h4>
-            {{ form_start(formRightAnswer) }}
-            <button class="btn btn-outline-success">{{ button_label|default('Valider la bonne réponse') }}</button>
+            <h4>Réponse(s) ({{ question.answers|length }} réponse(s))</h4>
+            {# {{ form_start(formRightAnswer) }} #}
+            {# <button class="btn btn-outline-success">{{ button_label|default('Valider la bonne réponse') }}</button> #}
             {% for answer in question.answers %}
+                {% if question.rightAnswer.id is defined and question.rightAnswer.id is not null and question.rightAnswer.id == answer.id %}
+                <div class="right-answer" style="background-color:green">
+                {% else %}                
                 <div class="answer">
-                {{ form_widget(formRightAnswer) }}
+                {% endif %}
+                {# {{ form_widget(formRightAnswer) }}
+                {{ form_help(formRightAnswer ) }} #}
                     <div class="answer-author">
                         par 
                         <a href="{{ path('user_show', {'id':answer.author.id, 'slug':answer.author.slug}) }}">{{ answer.author.username }}</a>
@@ -45,9 +50,22 @@
                             {{ answer.content }}
                         </p>
                     </div>
+                    <div class="manage-answer">
+                    {% if app.user.id == question.author.id %}                    
+                        <form action="{{ path('question_right', {'id':question.id, 'answerId':answer.id }) }}" method="post">
+                            <input type="hidden" name="_token" value="{{ csrf_token('right' ~ question.id) }}">
+                            <button type="submit">Valider cette réponse</button>
+                        </form>
+                    {% endif %}
+
+                        <form action="{{ path('question_answer_status', {'id':question.id, 'answerId':answer.id }) }}" method="post">
+                            <input type="hidden" name="_token" value="{{ csrf_token('answer-status' ~ answer.id) }}">
+                            <button type="submit">Bloquer cette réponse</button>
+                        </form>
+                    </div>
                 </div>
             {% endfor %}
-            {{ form_end(formRightAnswer) }}
+            {# {{ form_end(formRightAnswer) }} #}
             </div>
         {{ include('question/_form_answer.html.twig') }}
         <a href="{{ path('question_list') }}">back to list</a>

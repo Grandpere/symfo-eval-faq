@@ -5,7 +5,7 @@
     {% endif %}
 
     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-    <a class="btn btn-outline-primary my-2 my-sm-0" href="">Mon profil</a>
+    <a class="btn btn-outline-primary my-2 my-sm-0" href="{{ path('user_show', {'id':app.user.id, 'slug':app.user.slug})}}">{{ app.user.username }}</a>
     <a class="btn btn-outline-primary my-2 my-sm-0" href="{{ path('app_logout') }}">Deconnexion</a>
     {% else %}
     <a class="btn btn-outline-primary my-2 my-sm-0" href="{{ path('app_register') }}">Inscription</a>

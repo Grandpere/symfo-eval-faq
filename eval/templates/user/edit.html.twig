@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ user.username }}{% endblock %}
+
+{% block sidebar %}
+    {% include "navigation/_left_nav.html.twig" %}
+{% endblock %}
+
+{% block body %}
+<div class="d-flex justify-content-between mb-4">
+    <h2 class="col-9">{{ user.username }}</h2>
+</div>
+
+<div class="content">
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}
+</div>
+<a href="{{ path('user_list') }}">back to profil</a>
+</div>
+{% endblock %}

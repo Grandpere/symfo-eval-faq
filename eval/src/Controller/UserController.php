@@ -2,11 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
+use App\Form\UserType;
+use App\Repository\UserRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use App\Entity\User;
-use App\Repository\UserRepository;
 
 /**
  * @Route("/user", name="user_")
@@ -24,7 +26,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/{slug}", name="show", methods={"GET"}, requirements={"slug"="[a-zA-Z0-9-]+"})
+     * @Route("/{id}/{slug}", name="show", methods={"GET"}, requirements={"id"="\d+", "slug"="[a-zA-Z0-9-]+"})
      */
     public function show(User $user) : Response
     {
@@ -34,5 +36,35 @@ class UserController extends AbstractController
         return $this->render('user/show.html.twig', [
             'user' => $user,
         ]);
+    }
+
+    /**
+     * @Route("/{id}/{slug}/edit", name="edit", methods={"GET","POST"}, requirements={"id"="\d+", "slug"="[a-zA-Z0-9-]+"})
+     */
+    public function edit(Request $request, User $user) : Response
+    {   
+        if(!$user) {
+            throw $this->createNotFoundException('User introuvable');
+        }
+        
+        if($this->getUser() == $user) {
+            $form = $this->createForm(UserType::class, $user);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->getDoctrine()->getManager()->flush();
+
+                return $this->redirectToRoute('user_edit', [
+                    'id' => $user->getId(),
+                    'slug' => $user->getSlug(),
+                ]);
+            }
+
+            return $this->render('user/edit.html.twig', [
+                'user' => $user,
+                'form' => $form->createView(),
+            ]);
+        }
+        return $this->redirectToRoute('user_show', ['id'=>$user->getId(), 'slug'=>$user->getSlug()]);
     }
 }
