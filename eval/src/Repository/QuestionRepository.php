@@ -36,16 +36,4 @@ class QuestionRepository extends ServiceEntityRepository
                         // ->setMaxResults(7);
         return $query->getQuery()->getResult();
     }
-
-    // public function findAnswerActiveByQuestion($question)
-    // {
-    //     return $this->createQueryBuilder('a')
-    //         ->innerJoin('a.question', 'q')
-    //         ->addSelect('q')
-    //         ->andWhere('a.question = :question')
-    //         ->setParameter('question', $question)
-    //         ->getQuery()
-    //         ->getResult()
-    //     ;
-    // }
 }

@@ -37,10 +37,10 @@
                 {{ question.content }}
             </div>
             <div class="answers mx-4">
-            <h4>Réponse(s) ({{ question.answers|length }} réponse(s))</h4>
+            <h4>Réponse(s) ({{ answers|length }} réponse(s))</h4>
             {# {{ form_start(formRightAnswer) }} #}
             {# <button class="btn btn-outline-success">{{ button_label|default('Valider la bonne réponse') }}</button> #}
-            {% for answer in question.answers %}
+            {% for answer in answers %}
                 {% if question.rightAnswer.id is defined and question.rightAnswer.id is not null and question.rightAnswer.id == answer.id %}
                 <div class="right-answer" style="background-color:green">
                 {% else %}                
@@ -59,7 +59,7 @@
                         </p>
                     </div>
                     <div class="manage-answer">
-                    {% if app.user.id == question.author.id %}                    
+                    {% if app.user.id is defined and app.user.id is not null and app.user.id == question.author.id %}                    
                         <form action="{{ path('question_right', {'id':question.id, 'answerId':answer.id }) }}" method="post">
                             <input type="hidden" name="_token" value="{{ csrf_token('right' ~ question.id) }}">
                             <button type="submit">Valider cette réponse</button>

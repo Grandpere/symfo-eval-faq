@@ -42,7 +42,7 @@ class QuestionController extends AbstractController
     /**
      * @Route("question/{id}/{slug}", name="show", methods={"GET", "POST"}, requirements={"id"="\d+","slug"="[a-zA-Z0-9-]+"})
      */
-    public function show(Request $request, Question $question): Response
+    public function show(Request $request, Question $question, AnswerRepository $answerRepository): Response
     {
         if(!$question) {
             throw $this->createNotFoundException('Question introuvable');
@@ -54,6 +54,18 @@ class QuestionController extends AbstractController
         $formAnswer->handleRequest($request);
 
         if ($formAnswer->isSubmitted() && $formAnswer->isValid()) {
+            if ($this->getUser() == null) {
+                // return $this->redirectToRoute('app_login');
+                $this->addFlash(
+                    'danger',
+                    'Vous devez vous enregistrer pour répondre'
+                );
+                return $this->render('question/show.html.twig', [
+                    'question' => $question,
+                    'answers' => $answerRepository->allActiveAnswersByQuestion($question),
+                    'formAnswer' => $formAnswer->createView()
+                ]);
+            }
             $entityManager = $this->getDoctrine()->getManager();
             $author = $this->getUser();
             $answer->setAuthor($author);
@@ -87,7 +99,7 @@ class QuestionController extends AbstractController
 
         return $this->render('question/show.html.twig', [
             'question' => $question,
-            'answer' => $answer,
+            'answers' => $answerRepository->allActiveAnswersByQuestion($question),
             'formAnswer' => $formAnswer->createView(),
             // 'formRightAnswer' => $formRightAnswer->createView(),
         ]);

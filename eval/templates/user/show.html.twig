@@ -9,7 +9,7 @@
 {% block body %}
 <div class="d-flex justify-content-between mb-4">
     <h2 class="col-9">{{ user.username }}</h2>
-    {% if app.user.id == user.id %}
+    {% if app.user.id is defined and app.user.id is not null and app.user.id == user.id %}
     <a class="btn btn-primary" href="{{ path('user_edit', {'id': user.id, 'slug': user.slug}) }}">Editer mon profil</a>
     {% endif %}    
 </div>

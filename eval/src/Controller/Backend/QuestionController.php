@@ -97,6 +97,6 @@ class QuestionController extends AbstractController
             'Enregistrement effectué'
             );
         }
-        return $this->redirectToRoute('question_show', ['id'=> $question->getId() , 'slug'=> $question->getSlug()]);
+        return $this->redirectToRoute('question_list');
     }
 }

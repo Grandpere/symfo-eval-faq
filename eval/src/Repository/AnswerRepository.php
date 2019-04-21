@@ -48,5 +48,14 @@ class AnswerRepository extends ServiceEntityRepository
     }
     */
 
-    // TODO: faire custom query pour obtenir uniquement les réponses active d'une question
+    public function allActiveAnswersByQuestion($question)
+    {
+        $query = $this->createQueryBuilder('a')
+            ->innerJoin('a.question', 'q')
+            ->addSelect('q')
+            ->andWhere('a.question = :question')
+            ->andWhere('a.status = 1')
+            ->setParameter('question', $question);
+        return $query->getQuery()->getResult();
+    }
 }
