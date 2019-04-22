@@ -7,6 +7,13 @@
 ==> **je ne me suis pas trop attardé sur les fixtures et notamment sur alice par peur de manquer de temps**
 ==> dans mes fixtures le pass par defaut a hasher est password, les roles sont ROLE_USER (par defaut), ROLE_MODERATEUR et ROLE_ADMIN
 
+- [trello](https://trello.com/b/EgH85MAz/eval-symfo)
+- [docs GoogleDrive](https://docs.google.com/spreadsheets/d/1fyOXBYqU4ayFhr-0dm_giotal3Fif9QZeW2ldxRjI_Y/edit#gid=0)
+
+==> les docs ne sont pas à jour (mcd compris) je n'ai pas eu le temps 
+
+
+
 ## Structure du site
 
 ### Fonctions de modération
