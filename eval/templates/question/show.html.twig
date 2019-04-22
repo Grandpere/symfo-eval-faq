@@ -17,13 +17,16 @@
             </form>
         </div>
         {% endif %}
+        <div class="vote-question"> {{ question.vote }}
+            {{ form_start(questionVote) }}
+            {{ form_widget(questionVote) }}
+            {{ form_end(questionVote) }}
+        </div>
     </div>
     <div class="about">
         <div class="tags">
             {% for tag in question.tags %}
-                <a class="badge badge-secondary" href="">
-                    {{ tag.name }}
-                </a>
+                <a class="badge badge-secondary" href="{{ path('tag_show', {'id':tag.id, 'slug':tag.slug}) }}">{{ tag.name }}</a>
             {% endfor %}
         </div>
         <div class="question-author">
@@ -38,16 +41,12 @@
             </div>
             <div class="answers mx-4">
             <h4>Réponse(s) ({{ answers|length }} réponse(s))</h4>
-            {# {{ form_start(formRightAnswer) }} #}
-            {# <button class="btn btn-outline-success">{{ button_label|default('Valider la bonne réponse') }}</button> #}
             {% for answer in answers %}
                 {% if question.rightAnswer.id is defined and question.rightAnswer.id is not null and question.rightAnswer.id == answer.id %}
                 <div class="right-answer" style="background-color:green">
                 {% else %}                
                 <div class="answer">
                 {% endif %}
-                {# {{ form_widget(formRightAnswer) }}
-                {{ form_help(formRightAnswer ) }} #}
                     <div class="answer-author">
                         par 
                         <a href="{{ path('user_show', {'id':answer.author.id, 'slug':answer.author.slug}) }}">{{ answer.author.username }}</a>
@@ -72,9 +71,15 @@
                         </form>
                         {% endif %}
                     </div>
+                    <div class="vote-answer"> {{ answer.vote }}
+                        <form action="{{ path('question_answer_vote', {'id': question.id, 'answerId':answer.id }) }}" method="post">
+                            <input type="hidden" name="_token" value="{{ csrf_token('answer-vote' ~ answer.id) }}">
+                            <button name="up" value="true" type="submit">+1</button>
+                            <button name="down" value="true" type="submit">-1</button>
+                        </form>
+                    </div>
                 </div>
             {% endfor %}
-            {# {{ form_end(formRightAnswer) }} #}
             </div>
         {{ include('question/_form_answer.html.twig') }}
         <a href="{{ path('question_list') }}">back to list</a>

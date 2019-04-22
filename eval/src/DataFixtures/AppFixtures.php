@@ -93,6 +93,8 @@ class AppFixtures extends Fixture
         $populator->addEntity('App\Entity\Question', 50, array(
             'title' => function() use ($generator) { return $generator->sentence(); },
             'content' => function() use ($generator) { return $generator->sentence(); },
+            'status' => 1,
+            'vote' => 0,
         ), array(
             function($question) {
                 $slug = $this->slugger->slugify($question->getTitle());
@@ -103,6 +105,8 @@ class AppFixtures extends Fixture
         // ANSWER
         $populator->addEntity('App\Entity\Answer', 150, array(
             'content' => function() use ($generator) { return $generator->sentence(); },
+            'status' => 1,
+            'vote' => 0,
         ));
 
         $inserted = $populator->execute();

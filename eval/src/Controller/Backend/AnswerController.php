@@ -21,30 +21,7 @@ class AnswerController extends AbstractController
     public function list(AnswerRepository $answerRepository): Response
     {
         return $this->render('backend/answer/list.html.twig', [
-            'answers' => $answerRepository->findAll(),
-        ]);
-    }
-
-    /**
-     * @Route("/new", name="new", methods={"GET","POST"})
-     */
-    public function new(Request $request): Response
-    {
-        $answer = new Answer();
-        $form = $this->createForm(AnswerType::class, $answer);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($answer);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('backend_answer_list');
-        }
-
-        return $this->render('backend/answer/new.html.twig', [
-            'answer' => $answer,
-            'form' => $form->createView(),
+            'answers' => $answerRepository->allInactiveAnswers(),
         ]);
     }
 
@@ -55,28 +32,6 @@ class AnswerController extends AbstractController
     {
         return $this->render('backend/answer/show.html.twig', [
             'answer' => $answer,
-        ]);
-    }
-
-    /**
-     * @Route("/{id}/edit", name="edit", methods={"GET","POST"})
-     */
-    public function edit(Request $request, Answer $answer): Response
-    {
-        $form = $this->createForm(AnswerType::class, $answer);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('backend_answer_list', [
-                'id' => $answer->getId(),
-            ]);
-        }
-
-        return $this->render('backend/answer/edit.html.twig', [
-            'answer' => $answer,
-            'form' => $form->createView(),
         ]);
     }
 

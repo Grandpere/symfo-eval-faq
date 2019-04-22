@@ -47,4 +47,15 @@ class UserRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function allUsersWithRoleUser()
+    {
+        $query = $this->createQueryBuilder('u')
+                        ->innerJoin('u.role', 'r')
+                        ->addSelect('r')
+                        ->andWhere('r.name = :ROLE_USER')
+                        ->setParameter('ROLE_USER', 'ROLE_USER')
+                        ->orderBy('u.id', 'DESC');
+        return $query->getQuery()->getResult();
+    }
 }

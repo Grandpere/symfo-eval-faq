@@ -24,7 +24,10 @@
                 <td>{{ answer.updatedAt ? answer.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
                     <a href="{{ path('backend_answer_show', {'id': answer.id}) }}">show</a>
-                    <a href="{{ path('backend_answer_edit', {'id': answer.id}) }}">edit</a>
+                    <form action="{{ path('backend_answer_status', {'id':answer.id }) }}" method="post">
+                        <input type="hidden" name="_token" value="{{ csrf_token('answer-status' ~ answer.id) }}">
+                        <button type="submit">Débloquer</button>
+                    </form>
                 </td>
             </tr>
         {% else %}
@@ -34,6 +37,4 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('backend_answer_new') }}">Create new</a>
 {% endblock %}

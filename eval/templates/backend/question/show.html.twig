@@ -36,5 +36,8 @@
 
     <a href="{{ path('backend_question_list') }}">back to list</a>
 
-    <a href="{{ path('backend_question_edit', {'id': question.id}) }}">edit</a>
+    <form action="{{ path('backend_question_status', {'id':question.id }) }}" method="post">
+        <input type="hidden" name="_token" value="{{ csrf_token('question-status' ~ question.id) }}">
+        <button type="submit">Débloquer</button>
+    </form>
 {% endblock %}

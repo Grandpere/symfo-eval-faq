@@ -58,4 +58,12 @@ class AnswerRepository extends ServiceEntityRepository
             ->setParameter('question', $question);
         return $query->getQuery()->getResult();
     }
+
+    public function allInactiveAnswers()
+    {
+        $query = $this->createQueryBuilder('a')
+                        ->andWhere('a.status = 0')
+                        ->orderBy('a.id', 'DESC');
+        return $query->getQuery()->getResult();
+    }
 }

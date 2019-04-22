@@ -48,10 +48,16 @@ class Answer
      */
     private $status;
 
+    /**
+     * @ORM\Column(type="integer", options={"unsigned"=false})
+     */
+    private $vote;
+
     public function __construct()
     {
         $this->created_at = new \DateTime();
         $this->status = true;
+        $this->vote = 0;
     }
 
     public function getId(): ?int
@@ -127,6 +133,18 @@ class Answer
     public function setStatus(bool $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getVote(): ?int
+    {
+        return $this->vote;
+    }
+
+    public function setVote(int $vote): self
+    {
+        $this->vote = $vote;
 
         return $this;
     }

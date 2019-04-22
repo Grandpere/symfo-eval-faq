@@ -28,7 +28,10 @@
                 <td>{{ question.updatedAt ? question.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
                     <a href="{{ path('backend_question_show', {'id': question.id}) }}">show</a>
-                    <a href="{{ path('backend_question_edit', {'id': question.id}) }}">edit</a>
+                    <form action="{{ path('backend_question_status', {'id':question.id }) }}" method="post">
+                        <input type="hidden" name="_token" value="{{ csrf_token('question-status' ~ question.id) }}">
+                        <button type="submit">Débloquer</button>
+                    </form>
                 </td>
             </tr>
         {% else %}
@@ -38,6 +41,4 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('backend_question_new') }}">Create new</a>
 {% endblock %}
