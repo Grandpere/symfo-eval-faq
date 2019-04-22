@@ -38,6 +38,6 @@
 
     <form action="{{ path('backend_question_status', {'id':question.id }) }}" method="post">
         <input type="hidden" name="_token" value="{{ csrf_token('question-status' ~ question.id) }}">
-        <button type="submit">Débloquer</button>
+        <button class="btn text-success" type="submit"><i class="fas fa-unlock"></i></button>
     </form>
 {% endblock %}

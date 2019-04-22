@@ -7,26 +7,29 @@
 {% endblock %}
 
 {% block body %}
-<div class="d-flex justify-content-between mb-4">
+<div class="d-flex justify-content-between mb-4 mr-4">
     <h2 class="col-9">Dernières questions</h2>
     <a class="btn btn-primary" href="{{ path('question_new') }}">Nouvelle question</a>
 </div>
 
-<div class="content">
+<div class="content mr-4">
     {% for question in questions %}
-        <div class="card mb-2">
-            <div class="card-header">
+        <div class="card mb-2 border-dark">
+            <div class="card-header bg-{{ cycle(['one', 'two'], loop.index0) }}">
                 <a href="{{ path('question_show', {'id':question.id, 'slug':question.slug}) }}">{{ question.title }}</a>
             </div>
-            <div class="card-body">
+            <div class="card-body text-left">
                 {% for tag in question.tags %}
                     <a class="badge badge-secondary" href="{{ path('tag_show', {'id':tag.id, 'slug':tag.slug}) }}">{{ tag.name }}</a>
                 {% endfor %}
             </div>
-            <div class="card-footer"> 
-                <a href="{{ path('user_show', {'id':question.author.id, 'slug':question.author.slug}) }}">{{ question.author.username }}</a>
-                le {{ question.createdAt|date("d/m/Y") }} à {{ question.createdAt|date("H:i:s") }}
-            </div>
+            <p class="card-text col-12 text-right">
+                <small class="text-muted">
+                    par
+                    <a href="{{ path('user_show', {'id':question.author.id, 'slug':question.author.slug}) }}">{{ question.author.username }}</a>
+                    le {{ question.createdAt|date("d/m/Y") }} à {{ question.createdAt|date("H:i:s") }}
+                </small>
+            </p>
         </div>
     {% else %}
         <td colspan="7">no records found

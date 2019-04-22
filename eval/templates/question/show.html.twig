@@ -7,20 +7,24 @@
 {% endblock %}
 
 {% block body %}
-    <div class="d-flex justify-content-between mb-4">
-        <h2 class="col-9">{{ question.title }}</h2>
-        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATEUR') %}
-        <div class="manage-question">
-            <form action="{{ path('backend_question_status', {'id':question.id }) }}" method="post">
-                <input type="hidden" name="_token" value="{{ csrf_token('question-status' ~ question.id) }}">
-                <button type="submit">Bloquer cette question</button>
-            </form>
-        </div>
-        {% endif %}
-        <div class="vote-question"> {{ question.vote }}
-            {{ form_start(questionVote) }}
-            {{ form_widget(questionVote) }}
-            {{ form_end(questionVote) }}
+    <div class="row question-header">
+        <h2 class="question-header__title col-12">{{ question.title }}</h2>
+        <div class="question-header__actions col-12 row justify-content-between">
+            {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATEUR') %}
+            <div class="question-header__actions__manage-question">
+                <form class="form-inline" action="{{ path('backend_question_status', {'id':question.id }) }}" method="post">
+                    <input type="hidden" name="_token" value="{{ csrf_token('question-status' ~ question.id) }}">
+                    <button class="btn text-danger" type="submit"><i class="fas fa-lock"></i></button>
+                </form>
+            </div>
+            {% endif %}
+            <div class="vote-question d-flex justify-content-end"> 
+                <p>{{ question.vote }} votes</p>
+                {{ form_start(questionVote, {'attr': {'class': 'form-inline'}}) }}
+                {{ form_widget(questionVote.up, {'attr': {'class': 'btn-vote btn btn-success'}}) }}
+                {{ form_widget(questionVote.down, {'attr': {'class': 'btn-vote btn btn-danger'}}) }}
+                {{ form_end(questionVote) }}
+            </div>
         </div>
     </div>
     <div class="about">
@@ -29,54 +33,59 @@
                 <a class="badge badge-secondary" href="{{ path('tag_show', {'id':tag.id, 'slug':tag.slug}) }}">{{ tag.name }}</a>
             {% endfor %}
         </div>
-        <div class="question-author">
+        <div class="question-header__about__author">
             par 
             <a href="{{ path('user_show', {'id':question.author.id, 'slug':question.author.slug}) }}">{{ question.author.username }}</a>
             le {{ question.createdAt|date("d/m/Y") }} à {{ question.createdAt|date("H:i:s") }}
         </div>
     </div>
     <div class="content">
-            <div class="detail mb-4">
+            <div class="question-content">
                 {{ question.content }}
             </div>
-            <div class="answers mx-4">
+            <div class="answers d-flex flex-column">
             <h4>Réponse(s) ({{ answers|length }} réponse(s))</h4>
             {% for answer in answers %}
                 {% if question.rightAnswer.id is defined and question.rightAnswer.id is not null and question.rightAnswer.id == answer.id %}
-                <div class="right-answer" style="background-color:green">
+                <div class="answer right-answer order-1">
                 {% else %}                
-                <div class="answer">
+                <div class="answer order-2">
                 {% endif %}
-                    <div class="answer-author">
-                        par 
-                        <a href="{{ path('user_show', {'id':answer.author.id, 'slug':answer.author.slug}) }}">{{ answer.author.username }}</a>
-                        le {{ answer.createdAt|date("d/m/Y") }} à {{ answer.createdAt|date("H:i:s") }}
+                    <div class="answer__about d-flex justify-content-between">
+                        <div class="answer__about__author">
+                            par
+                            <a href="{{ path('user_show', {'id':answer.author.id, 'slug':answer.author.slug}) }}">{{ answer.author.username }}</a>
+                            le {{ answer.createdAt|date("d/m/Y") }} à {{ answer.createdAt|date("H:i:s") }}
+                        </div>
+                        {{ answer.vote }} votes
                     </div>
                     <div class="answer-content">
                         <p>
                             {{ answer.content }}
                         </p>
                     </div>
-                    <div class="manage-answer">
-                    {% if app.user.id is defined and app.user.id is not null and app.user.id == question.author.id %}                    
-                        <form action="{{ path('question_right', {'id':question.id, 'answerId':answer.id }) }}" method="post">
-                            <input type="hidden" name="_token" value="{{ csrf_token('right' ~ question.id) }}">
-                            <button type="submit">Valider cette réponse</button>
-                        </form>
-                    {% endif %}
-                        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATEUR') %}
-                        <form action="{{ path('backend_answer_status', {'id':answer.id }) }}" method="post">
-                            <input type="hidden" name="_token" value="{{ csrf_token('answer-status' ~ answer.id) }}">
-                            <button type="submit">Bloquer cette réponse</button>
-                        </form>
+                    <div class="answer-actions d-flex justify-content-between">
+                        <div class="manage-answer d-flex">
+                        {% if app.user.id is defined and app.user.id is not null and app.user.id == question.author.id %}                    
+                            <form class="form-inline" action="{{ path('question_right', {'id':question.id, 'answerId':answer.id }) }}" method="post">
+                                <input type="hidden" name="_token" value="{{ csrf_token('right' ~ question.id) }}">
+                                <button class="btn text-dark" type="submit"><i class="fas fa-check"></i></button>
+                            </form>
                         {% endif %}
-                    </div>
-                    <div class="vote-answer"> {{ answer.vote }}
-                        <form action="{{ path('question_answer_vote', {'id': question.id, 'answerId':answer.id }) }}" method="post">
-                            <input type="hidden" name="_token" value="{{ csrf_token('answer-vote' ~ answer.id) }}">
-                            <button name="up" value="true" type="submit">+1</button>
-                            <button name="down" value="true" type="submit">-1</button>
-                        </form>
+                            {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATEUR') %}
+                            <form class="form-inline" action="{{ path('backend_answer_status', {'id':answer.id }) }}" method="post">
+                                <input type="hidden" name="_token" value="{{ csrf_token('answer-status' ~ answer.id) }}">
+                                <button class="btn text-danger" type="submit"><i class="fas fa-lock"></i></button>
+                            </form>
+                            {% endif %}
+                        </div>
+                        <div class="vote-answer d-flex justify-content-end"> 
+                            <form class="form-inline" action="{{ path('question_answer_vote', {'id': question.id, 'answerId':answer.id }) }}" method="post">
+                                <input type="hidden" name="_token" value="{{ csrf_token('answer-vote' ~ answer.id) }}">
+                                <button class="btn-vote btn btn-success" name="up" value="true" type="submit">+1</button>
+                                <button class="btn-vote btn btn-danger" name="down" value="true" type="submit">-1</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             {% endfor %}

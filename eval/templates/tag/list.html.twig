@@ -11,16 +11,14 @@
     <h2 class="col-9">Liste des thèmes ({{ tags|length }} thème(s))</h2>
 </div>
 
-<div class="content">
+<div class="content mr-4 row justify-content-center text-center">
     {% for tag in tags %}
-        <div class="card mb-2">
-            <div class="card-header">
-                <a href="{{ path('tag_show', {'id':tag.id, 'slug':tag.slug}) }}">{{ tag.name }}</a>
-            </div>
-            <div class="card-body">
+        <div class="card p-4 mb-2 border-dark card-tag bg-{{ cycle(['one', 'two'], loop.index0) }}">
+            <a href="{{ path('tag_show', {'id':tag.id, 'slug':tag.slug}) }}">{{ tag.name }}</a>
+            <small class="text-muted">
                 {{ tag.questions|length }}
                 Question(s)
-            </div>
+            </small>
         </div>
     {% else %}
         <td colspan="7">no records found

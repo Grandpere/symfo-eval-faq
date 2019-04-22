@@ -67,7 +67,7 @@ class QuestionController extends AbstractController
                 return $this->render('question/show.html.twig', [
                     'question' => $question,
                     'answers' => $answerRepository->allActiveAnswersByQuestion($question),
-                    'formAnswer' => $questionVote->createView(),
+                    'formAnswer' => $formAnswer->createView(),
                     'questionVote' => $questionVote->createView(),
                 ]);
             }
