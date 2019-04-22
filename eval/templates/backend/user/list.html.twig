@@ -25,10 +25,10 @@
                 <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ user.updatedAt ? user.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-                    {# <a href="{{ path('backend_user_show', {'id': user.id}) }}">show</a> #}
-                    <form action="{{ path('backend_user_promote', {'id':user.id }) }}" method="post">
+                    <form class="form" action="{{ path('backend_user_promote', {'id':user.id }) }}" method="post">
                         <input type="hidden" name="_token" value="{{ csrf_token('user-promote' ~ user.id) }}">
-                        <button type="submit">Promouvoir en modérateur</button>
+                        {# <button class"btn btn-primary">Promouvoir en modérateur</button> #}
+                        <button type="submit" class="btn btn-outline-warning">Promouvoir en modérateur</button>
                     </form>
                 </td>
             </tr>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Frontend;
 
 use App\Entity\Tag;
 use App\Repository\TagRepository;
@@ -18,20 +18,20 @@ class TagController extends AbstractController
      */
     public function list(TagRepository $tagRepository) : Response
     {
-        return $this->render('tag/list.html.twig', [
+        return $this->render('frontend/tag/list.html.twig', [
             'tags' => $tagRepository->findAll(),
         ]);
     }
 
     /**
-     * @Route("/{id}/{slug}", name="show", methods={"GET"}, requirements={"slug"="[a-zA-Z0-9-]+"})
+     * @Route("/{id}/{slug}", name="show", methods={"GET"}, requirements={"id"="\d+", "slug"="[a-zA-Z0-9-]+"})
      */
     public function show(Tag $tag): Response
     {
         if(!$tag) {
             throw $this->createNotFoundException('Tag introuvable');
         }
-        return $this->render('tag/show.html.twig', [
+        return $this->render('frontend/tag/show.html.twig', [
             'tag' => $tag,
         ]);
     }

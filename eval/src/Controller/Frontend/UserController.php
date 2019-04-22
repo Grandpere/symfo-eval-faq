@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Frontend;
 
 use App\Entity\User;
 use App\Form\UserType;
@@ -20,7 +20,7 @@ class UserController extends AbstractController
      */
     public function list(UserRepository $userRepository) : Response
     {
-        return $this->render('user/list.html.twig', [
+        return $this->render('frontend/user/list.html.twig', [
             'users' => $userRepository->findAll(),
         ]);
     }
@@ -33,7 +33,7 @@ class UserController extends AbstractController
         if(!$user) {
             throw $this->createNotFoundException('User introuvable');
         }
-        return $this->render('user/show.html.twig', [
+        return $this->render('frontend/user/show.html.twig', [
             'user' => $user,
         ]);
     }
@@ -60,7 +60,7 @@ class UserController extends AbstractController
                 ]);
             }
 
-            return $this->render('user/edit.html.twig', [
+            return $this->render('frontend/user/edit.html.twig', [
                 'user' => $user,
                 'form' => $form->createView(),
             ]);

@@ -12,13 +12,11 @@
         <header>
             {% include "navigation/_main_nav.html.twig" %}
             <div id="banner" class="jumbotron">
-
                 <h1>
                     <a href="{{ path('question_list')}}">
                         FAQ - OClock
                     </a>
                 </h1>
-
             </div>
         </header>
         <div id="subnav">
@@ -28,7 +26,6 @@
         <div class="container-fluid">
             <div class="row">
                 {% block sidebar %}{% endblock %}
-
                 <div class="col-10">
                     {% for label, messages in app.flashes %}
                         {% for message in messages %}

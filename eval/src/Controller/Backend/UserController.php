@@ -3,11 +3,11 @@
 namespace App\Controller\Backend;
 
 use App\Entity\User;
+use App\Repository\RoleRepository;
 use App\Repository\UserRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use App\Repository\RoleRepository;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @Route("/backend/user", name="backend_user_")
@@ -25,7 +25,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/promote", name="promote")
+     * @Route("/{id}/promote", name="promote", requirements={"id"="\d+"})
      */
     public function promote(Request $request, User $user, RoleRepository $roleRepository)
     {

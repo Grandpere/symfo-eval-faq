@@ -5,11 +5,10 @@ namespace App\Controller\Backend;
 use App\Entity\Tag;
 use App\Form\TagType;
 use App\Repository\TagRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Service\Slugger;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("/backend/tag", name="backend_tag_")
@@ -29,7 +28,7 @@ class TagController extends AbstractController
     /**
      * @Route("/new", name="new", methods={"GET","POST"})
      */
-    public function new(Request $request, Slugger $slugger): Response
+    public function new(Request $request): Response
     {
         $tag = new Tag();
         $form = $this->createForm(TagType::class, $tag);
@@ -37,7 +36,6 @@ class TagController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            // $tag->setSlug($slugger->slugify($tag->getName()));
             $entityManager->persist($tag);
             $entityManager->flush();
 
@@ -51,7 +49,7 @@ class TagController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="show", methods={"GET"})
+     * @Route("/{id}", name="show", methods={"GET"}, requirements={"id"="\d+"})
      */
     public function show(Tag $tag): Response
     {
@@ -61,7 +59,7 @@ class TagController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="edit", methods={"GET","POST"}, requirements={"id"="\d+"})
      */
     public function edit(Request $request, Tag $tag): Response
     {
@@ -83,7 +81,7 @@ class TagController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="delete", methods={"DELETE"})
+     * @Route("/{id}", name="delete", methods={"DELETE"}, requirements={"id"="\d+"})
      */
     public function delete(Request $request, Tag $tag): Response
     {

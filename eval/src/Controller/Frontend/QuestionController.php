@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Frontend;
 
 use App\Entity\Answer;
 use App\Entity\Question;
 use App\Form\AnswerType;
 use App\Form\QuestionType;
+use App\Form\QuestionVoteType;
+use App\Repository\AnswerRepository;
 use App\Repository\QuestionRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use App\Repository\AnswerRepository;
-use App\Form\QuestionVoteType;
 
 /**
      * @Route(name="question_")
@@ -25,13 +25,13 @@ class QuestionController extends AbstractController
     public function list(QuestionRepository $questionRepository) : Response
     {
         // dd($questionRepository->sevenlastActiveQuestions());
-        return $this->render('question/list.html.twig', [
+        return $this->render('frontend/question/list.html.twig', [
             'questions' => $questionRepository->sevenlastActiveQuestions(),
         ]);
     }
 
     /**
-     * @Route("/questions/{page}", name="questions", methods={"GET"})
+     * @Route("/questions/{page}", name="questions", methods={"GET"}, requirements={"page"="\d+"})
      */
     public function questions(QuestionRepository $questionRepository, $page = 1) : Response
     {
@@ -42,7 +42,7 @@ class QuestionController extends AbstractController
             'pages_count' => ceil(count($questions) / 7),
             'route_params' => array()
         );
-        return $this->render('question/questions.html.twig', [
+        return $this->render('frontend/question/questions.html.twig', [
             'questions' => $questions,
             'pagination' => $pagination,
         ]);
@@ -71,7 +71,7 @@ class QuestionController extends AbstractController
                     'danger',
                     'Vous devez vous enregistrer pour voter'
                 );
-                return $this->render('question/show.html.twig', [
+                return $this->render('frontend/question/show.html.twig', [
                     'question' => $question,
                     'answers' => $answerRepository->allActiveAnswersByQuestion($question),
                     'formAnswer' => $formAnswer->createView(),
@@ -99,7 +99,7 @@ class QuestionController extends AbstractController
                     'danger',
                     'Vous devez vous enregistrer pour répondre'
                 );
-                return $this->render('question/show.html.twig', [
+                return $this->render('frontend/question/show.html.twig', [
                     'question' => $question,
                     'answers' => $answerRepository->allActiveAnswersByQuestion($question),
                     'formAnswer' => $formAnswer->createView(),
@@ -121,7 +121,7 @@ class QuestionController extends AbstractController
             return $this->redirectToRoute('question_show', ['id'=> $question->getId(), 'slug'=> $question->getSlug()]);
         }
 
-        return $this->render('question/show.html.twig', [
+        return $this->render('frontend/question/show.html.twig', [
             'question' => $question,
             'answers' => $answerRepository->allActiveAnswersByQuestion($question),
             'formAnswer' => $formAnswer->createView(),
@@ -153,7 +153,7 @@ class QuestionController extends AbstractController
             return $this->redirectToRoute('question_show', ['id'=> $question->getId(), 'slug'=> $question->getSlug()]);
         }
 
-        return $this->render('question/new.html.twig', [
+        return $this->render('frontend/question/new.html.twig', [
             'question' => $question,
             'form' => $form->createView(),
         ]);
@@ -187,7 +187,7 @@ class QuestionController extends AbstractController
     }
 
     /**
-     * @Route("/question/{id}/answer/{answerId}/vote", name="answer_vote", methods={"POST"}, requirements={"id"="\d+"})
+     * @Route("/question/{id}/answer/{answerId}/vote", name="answer_vote", methods={"POST"}, requirements={"id"="\d+", "answerId"="\d+"})
      */
     public function vote(Request $request, Question $question, AnswerRepository $answerRepository, $answerId) : Response
     {
@@ -212,7 +212,7 @@ class QuestionController extends AbstractController
                 $questionVote = $this->createForm(QuestionVoteType::class, $question);
                 $questionVote->handleRequest($request);
 
-                return $this->render('question/show.html.twig', [
+                return $this->render('frontend/question/show.html.twig', [
                     'question' => $question,
                     'answers' => $answerRepository->allActiveAnswersByQuestion($question),
                     'formAnswer' => $formAnswer->createView(),

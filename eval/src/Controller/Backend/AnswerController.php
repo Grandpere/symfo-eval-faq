@@ -3,12 +3,11 @@
 namespace App\Controller\Backend;
 
 use App\Entity\Answer;
-use App\Form\AnswerType;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\AnswerRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Repository\AnswerRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("/backend/answer", name="backend_answer_")
@@ -26,7 +25,7 @@ class AnswerController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="show", methods={"GET"})
+     * @Route("/{id}", name="show", methods={"GET"}, requirements={"id"="\d+"})
      */
     public function show(Answer $answer): Response
     {
@@ -36,7 +35,7 @@ class AnswerController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/status", name="status", methods={"POST"})
+     * @Route("/{id}/status", name="status", methods={"POST"}, requirements={"id"="\d+"})
      */
     public function status(Request $request, Answer $answer) : Response
     {

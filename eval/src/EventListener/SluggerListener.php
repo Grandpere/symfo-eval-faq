@@ -29,12 +29,6 @@ class SluggerListener
     {
         $entity = $args->getObject();
 
-        // if (!$entity instanceof Question) {
-        //     return;
-        // }
-        // $slug = $this->slugger->slugify($entity->getTitle());
-        // $entity->setSlug($slug);
-
         if($entity instanceof Question) {
             $slug = $this->slugger->slugify($entity->getTitle());
         }

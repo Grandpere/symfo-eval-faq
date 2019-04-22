@@ -23,9 +23,7 @@ class RightAnswerType extends AbstractType
                 'expanded' => true,
                 'multiple' => false,
                 'empty_data' => null,
-            ])
-            // TODO: faire un bouton par réponse avec un form classique car affichage non adapté avec choice
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

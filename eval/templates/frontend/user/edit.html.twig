@@ -14,7 +14,7 @@
 <div class="content mr-4">
 {{ form_start(form) }}
     {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
 </div>
 <a href="{{ path('user_list') }}">back to profil</a>
