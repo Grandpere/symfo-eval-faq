@@ -62,10 +62,10 @@ class AppFixtures extends Fixture
         $manager->persist($roleModo);
 
         // USER
-        $populator->addEntity('App\Entity\User', 20, array(
-            'email' => function() use ($generator) { return $generator->email(); },
+        $populator->addEntity('App\Entity\User', 50, array(
+            'email' => function() use ($generator) { return $generator->unique()->email(); },
             'description' => function() use ($generator) { return $generator->sentence(); },
-            'username' => function() use ($generator) { return $generator->username(); },
+            'username' => function() use ($generator) { return $generator->unique()->username(); },
             'avatar' => function() use ($generator) { return $generator->imageUrl($width = 640, $height = 480); },
             'role' => $roleUser,
             'firstname' => function() use ($generator) { return $generator->firstName(); },
@@ -80,7 +80,7 @@ class AppFixtures extends Fixture
         ));
 
         // TAG
-        $populator->addEntity('App\Entity\Tag', 10, array(
+        $populator->addEntity('App\Entity\Tag', 20, array(
             'name' => function() use ($generator) { return $generator->unique()->jobTitle(); }
         ), array(
             function($tag) {
