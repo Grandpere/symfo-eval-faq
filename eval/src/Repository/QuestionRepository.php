@@ -22,11 +22,6 @@ class QuestionRepository extends ServiceEntityRepository
 
     public function sevenlastActiveQuestions()
     {
-        // $query = $this->createQueryBuilder('q')
-        //                 ->andWhere('q.status = 1')
-        //                 ->orderBy('q.id', 'DESC')
-        //                 ->setMaxResults(7);
-
         $query = $this->createQueryBuilder('q')
                         ->innerJoin('q.author', 'u')
                         ->addSelect('u')
@@ -36,25 +31,24 @@ class QuestionRepository extends ServiceEntityRepository
                         ->orderBy('q.id', 'DESC')
                         ->setFirstResult(0)
                         ->setMaxResults(7);
-                        // ->setMaxResults(7) // TODO: bug à cause du join donc a voir avec pagination
-                        ;
-                        // dd($query->getQuery()->getResult());
         return new Paginator($query);
     }
 
-    public function allActiveQuestions()
+    public function allActiveQuestions($page = 1, $max_results = 7)
     {
+        if ($page < 1) {
+            throw new \InvalidArgumentException('L\'argument $page ne peut être inférieur à 1 (valeur : "'.$page.'").');
+        }
         $query = $this->createQueryBuilder('q')
-                        // ->andWhere('q.status = 1')
-                        // ->orderBy('q.id', 'DESC');
-                        // ->setMaxResults(7);
                         ->innerJoin('q.author', 'u')
                         ->addSelect('u')
                         ->innerJoin('q.tags', 't')
                         ->addSelect('t')
                         ->andWhere('q.status = 1')
-                        ->orderBy('q.id', 'DESC');
-        return $query->getQuery()->getResult();
+                        ->orderBy('q.id', 'DESC')
+                        ->setFirstResult(($page - 1) * $max_results)
+                        ->setMaxResults($max_results);
+        return new Paginator($query);
     }
 
     public function allInactiveQuestions()

@@ -31,13 +31,20 @@ class QuestionController extends AbstractController
     }
 
     /**
-     * @Route("/questions", name="questions", methods={"GET"})
+     * @Route("/questions/{page}", name="questions", methods={"GET"})
      */
-    public function questions(QuestionRepository $questionRepository) : Response
+    public function questions(QuestionRepository $questionRepository, $page = 1) : Response
     {
-        // dd($questionRepository->allActiveQuestions());
+        $questions = $questionRepository->allActiveQuestions($page);
+        $pagination = array(
+            'page' => $page,
+            'route' => 'question_questions',
+            'pages_count' => ceil(count($questions) / 7),
+            'route_params' => array()
+        );
         return $this->render('question/questions.html.twig', [
-            'questions'=> $questionRepository->allActiveQuestions(),
+            'questions' => $questions,
+            'pagination' => $pagination,
         ]);
     }
 
