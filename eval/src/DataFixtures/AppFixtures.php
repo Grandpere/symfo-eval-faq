@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures;
 
-// use Nelmio\Alice\Loader\NativeLoader;
+use Nelmio\Alice\Loader\NativeLoader;
 use Faker\Factory;
 use App\Entity\Role;
 use App\Service\Slugger;
@@ -27,17 +27,8 @@ class AppFixtures extends Fixture
         // $entities = $loader->loadFile(__DIR__.'/fixtures.yml')->getObjects();
 
         // foreach ($entities as $entity) {
-        //     if (is_a($entity, 'App\Entity\Tag')) {
-        //         $slug = $this->slugger->slugify($entity->getName());
-        //         $entity->setSlug($slug);
-        //     }
-        //     if (is_a($entity, 'App\Entity\Question')) {
-        //         $slug = $this->slugger->slugify($entity->getTitle());
-        //         $entity->setSlug($slug);
-        //     }
         //     $manager->persist($entity);
         // };
-
         // $manager->flush();
 
         $generator = Factory::create('fr_FR');
