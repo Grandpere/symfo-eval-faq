@@ -1,5 +1,7 @@
 # FAQ-O-Clock
 
+![Screenshot](docs/faq.png)
+
 ## Instructions
 
 5. N'oubliez pas de **fournir un export de votre base de données** (les données seules) OU **fournir des Fixtures** (mieux, mais pas prioritaire). **S'il y'a des users/mots de passe indiquez-les dans un README à l'intention du correcteur.**
