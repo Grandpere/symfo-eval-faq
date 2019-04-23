@@ -4,7 +4,7 @@
 
 5. N'oubliez pas de **fournir un export de votre base de données** (les données seules) OU **fournir des Fixtures** (mieux, mais pas prioritaire). **S'il y'a des users/mots de passe indiquez-les dans un README à l'intention du correcteur.**
 
-==> **je ne me suis pas trop attardé sur les fixtures et notamment sur alice par peur de manquer de temps**
+==> **j'ai refais mes fixtures avec alice mais j'ai un bug mystérieux avec un question_id a null pourtant peuplé juste au dessus et impossible à résoudre donc je suis repassé à faker mais si besoin mon fichier de données sql qui fonctionnait parfaitement**
 ==> dans mes fixtures le pass par defaut a hasher est password, les roles sont ROLE_USER (par defaut), ROLE_MODERATEUR et ROLE_ADMIN
 
 - [trello](https://trello.com/b/EgH85MAz/eval-symfo)
